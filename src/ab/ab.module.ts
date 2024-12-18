@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AbController } from './ab.controller';
 import { AbService } from './ab.service';
 import { Companies } from './ab.entity';
-
+import { PitchDeck, Investment } from './ab.entity';
+import { Investor } from './investor.entity';
 @Module({
-  imports: [TypeOrmModule.forFeature([Companies]),
+  imports: [TypeOrmModule.forFeature([Companies, PitchDeck, Investment, Investor]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
