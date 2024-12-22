@@ -1,3 +1,4 @@
+//ab/ab.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
@@ -11,12 +12,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AbService {    
+  private dynamicSecrets = new Map<number, string>();
   constructor(
   @InjectRepository(Companies) private companiesRepo: Repository<Companies>,
   @InjectRepository(PitchDeck) private pitchDeckRepo: Repository<PitchDeck>,
   @InjectRepository(Investment) private investmentRepo: Repository<Investment>,
   @InjectRepository(Investor) private investorRepo: Repository<Investor>,
-  private readonly jwtService: JwtService
   ) {}
 
   // 1. Signup
@@ -32,16 +33,46 @@ export class AbService {
   //   return company;
   // }
 
-  async login(email: string, password: string): Promise<{ access_token: string }> {
-    const company = await this.companiesRepo.findOne({ where: { email } });
-    if (!company) throw new NotFoundException('Invalid email or password');
-    const isPasswordValid = await bcrypt.compare(password, company.password);    
-    if (!isPasswordValid) throw new NotFoundException('Invalid email or password');
-    const payload = { email: company.email, sub: company.id };
-    const access_token = this.jwtService.sign(payload);
+  // async login(email: string, password: string): Promise<{ access_token: string }> {
+  //   const company = await this.companiesRepo.findOne({ where: { email } });
+  //   if (!company) throw new NotFoundException('Invalid email or password');
+  //   const isPasswordValid = bcrypt.compare(password, company.password);
+  //   if (!isPasswordValid) throw new NotFoundException('Invalid email or password');
+  //   const secret = await bcrypt.genSalt();
+  //   this.dynamicSecrets.set(company.id, secret);
+  //   console.log("login: ",this.dynamicSecrets)
 
-    return { access_token };
+  //   // Create JWT token
+  //   const payload = { email: company.email, sub: company.id };
+  //   const access_token = this.jwtService.sign(payload, { secret });
+  //   return { access_token };
+  // }
+
+  // Logout function
+  async logout(userId: number): Promise<void> {
+    console.log("logout: ", this.dynamicSecrets)
+
+    if (this.dynamicSecrets.has(userId)) {
+      this.dynamicSecrets.delete(userId);
+      console.log("login: ",this.dynamicSecrets)
+
+    } else {
+      throw new NotFoundException('Session not found');
+    }
   }
+
+  // Validate token
+  // async validateToken(token: string, userId: number): Promise<boolean> {
+  //   const secret = this.dynamicSecrets.get(userId);
+  //   if (!secret) throw new NotFoundException('Session not found for this user');
+
+  //   try {
+  //     this.jwtService.verify(token, { secret });
+  //     return true;
+  //   } catch {
+  //     return false;
+  //   }
+  // }
 
   // 3. Update Company Details
   async updateCompany(id: number, updateCompanyDto: UpdateCompanyDto): Promise<Companies> {
