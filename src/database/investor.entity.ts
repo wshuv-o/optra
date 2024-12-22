@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Investment } from "./ab.entity";
+import { Investment } from "./database.entity";
 
 @Entity()
 export class Investor {

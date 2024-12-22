@@ -2,11 +2,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
-import { Companies } from './ab.entity';
+import { Companies } from '../database/database.entity';
 import { CreateCompanyDto, UpdateCompanyDto, CreatePitchDeckDto, CreateInvestmentDto } from './ab.dto';
-import { PitchDeck } from './ab.entity';
-import { Investment } from './ab.entity';
-import { Investor } from './investor.entity';
+import { PitchDeck } from '../database/database.entity';
+import { Investment } from '../database/database.entity';
+import { Investor } from '../database/investor.entity';
 import { CreateInvestorDto } from './ab.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';

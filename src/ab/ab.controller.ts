@@ -17,12 +17,6 @@ export class AbController {
         return this.abService.createCompany(createCompanyDto);
     }
 
-    // 2. Login
-    // @Post('login')
-    // async login(@Body() body: { email: string; password: string }) {
-    //     return this.abService.login(body.email, body.password);
-    // }
-
     @Post('logout') // Accessible without authentication
     async logout(@Body() body) {
         console.log(body.id)
@@ -30,25 +24,27 @@ export class AbController {
     }
     
     // 3. Update Company Details
-    //@Public()
     @Patch(':id')
     async updateCompany(@Param('id') id: number, @Body() updateCompanyDto: UpdateCompanyDto) {
         return this.abService.updateCompany(id, updateCompanyDto);
     }
 
     // 4. Fetch all company details
+    @Public()
     @Get('companies')
     async getAllCompanies() {
         return this.abService.getAllCompanies();
     }
 
     // 5. Fetch company details by ID
+    @Public()
     @Get('companies/:id')
     async getCompanyById(@Param('id') id: number) {
         return this.abService.getCompanyById(id);
     }
 
     // 6. Search companies by name (using param)
+    @Public()
     @Get('companies/search/:name')
     async searchCompaniesByName(@Param('name') name: string) {
         return this.abService.searchCompaniesByName(name);
@@ -61,12 +57,14 @@ export class AbController {
     }
 
     // 8. Create PitchDeck
+    @Public()
     @Post(':companyId/pitchdeck')
     async createPitchDeck(@Param('companyId') companyId: number, @Body() createPitchDeckDto: CreatePitchDeckDto) {
         return this.abService.createPitchDeck(companyId, createPitchDeckDto);
     }
 
     // 9. Fetch all pitch decks for a company
+    @Public()
     @Get(':companyId/pitchdecks')
     async getPitchDecksByCompany(@Param('companyId') companyId: number) {
         return this.abService.getPitchDecksByCompany(companyId);
