@@ -1,20 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AbService } from './ab.service';
 import { CreateCompanyDto, UpdateCompanyDto, CreatePitchDeckDto, CreateInvestmentDto } from './ab.dto';
 import { CreateInvestorDto } from './ab.dto';
-
-
+import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/auth/public.decorator';
 @Controller('ab')
+// @UseGuards(AuthGuard)
 export class AbController {
     constructor(private abService: AbService) {}
 
     // 1. Signup
+    @Public()
     @Post('signup')
     async signup(@Body() createCompanyDto: CreateCompanyDto) {
         return this.abService.createCompany(createCompanyDto);
     }
 
     // 2. Login
+    @Public()
     @Post('login')
     async login(@Body() body: { email: string; password: string }) {
         return this.abService.login(body.email, body.password);
@@ -27,6 +30,7 @@ export class AbController {
     }
 
     // 4. Fetch all company details
+    @Public()
     @Get('companies')
     async getAllCompanies() {
         return this.abService.getAllCompanies();

@@ -7,7 +7,8 @@ import { PitchDeck } from './ab.entity';
 import { Investment } from './ab.entity';
 import { Investor } from './investor.entity';
 import { CreateInvestorDto } from './ab.dto';
-
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AbService {    
   constructor(
@@ -15,6 +16,7 @@ export class AbService {
   @InjectRepository(PitchDeck) private pitchDeckRepo: Repository<PitchDeck>,
   @InjectRepository(Investment) private investmentRepo: Repository<Investment>,
   @InjectRepository(Investor) private investorRepo: Repository<Investor>,
+  private readonly jwtService: JwtService
   ) {}
 
   // 1. Signup
@@ -24,10 +26,21 @@ export class AbService {
   }
 
   // 2. Login
-  async login(email: string, password: string): Promise<Companies> {
-    const company = await this.companiesRepo.findOne({ where: { email, password } });
+  // async login(email: string, password: string): Promise<Companies> {
+  //   const company = await this.companiesRepo.findOne({ where: { email, password } });
+  //   if (!company) throw new NotFoundException('Invalid email or password');
+  //   return company;
+  // }
+
+  async login(email: string, password: string): Promise<{ access_token: string }> {
+    const company = await this.companiesRepo.findOne({ where: { email } });
     if (!company) throw new NotFoundException('Invalid email or password');
-    return company;
+    const isPasswordValid = await bcrypt.compare(password, company.password);    
+    if (!isPasswordValid) throw new NotFoundException('Invalid email or password');
+    const payload = { email: company.email, sub: company.id };
+    const access_token = this.jwtService.sign(payload);
+
+    return { access_token };
   }
 
   // 3. Update Company Details
