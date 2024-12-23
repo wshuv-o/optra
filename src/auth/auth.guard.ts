@@ -9,13 +9,12 @@ import {
   import { Request } from 'express';
   import { Reflector } from '@nestjs/core';
   import { IS_PUBLIC_KEY } from './public.decorator';
-  
+  import { BlacklistService } from '../blacklist/blacklist.service'; 
+
   @Injectable()
   export class AuthGuard implements CanActivate {
-    // In-memory blacklist (use Redis or database in production)
-    public tokenBlacklist = new Set<string>();
   
-    constructor(private jwtService: JwtService, private reflector: Reflector) {}
+    constructor(private jwtService: JwtService, private reflector: Reflector, public blacklistService: BlacklistService) {}
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
       const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -31,11 +30,10 @@ import {
       if (!token) {
         throw new UnauthorizedException();
       }
-      console.log("inside canactivate: ", this.tokenBlacklist)
+    //   console.log("inside canactivate: ", this.tokenBlacklist)
 
       // Check if token is blacklisted
-      if (this.isTokenBlacklisted(token)) {
-        console.log("inside isTokenBlacklisted: ", this.tokenBlacklist)
+      if (this.blacklistService.isTokenBlacklisted(token)) {
         throw new UnauthorizedException('Token has been invalidated');
 
       }
@@ -54,16 +52,6 @@ import {
     private extractTokenFromHeader(request: Request): string | undefined {
       const [type, token] = request.headers.authorization?.split(' ') ?? [];
       return type === 'Bearer' ? token : undefined;
-    }
-  
-    private isTokenBlacklisted(token: string): boolean {
-        console.log("token is in blacklist")
-      return this.tokenBlacklist.has(token);
-    }
-  
-    public blacklistToken(token: string): void {
-      this.tokenBlacklist.add(token); 
-      console.log("just blacklisted token: ", this.tokenBlacklist)
     }
   }
   

@@ -27,6 +27,6 @@ export class AuthService {
   }
   async logout(token: string, authGuard: AuthGuard): Promise<void> {
     if (!token) throw new UnauthorizedException('No token provided');
-    authGuard.blacklistToken(token);
+    authGuard.blacklistService.addToken(token);
   }
 }

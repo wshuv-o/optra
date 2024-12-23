@@ -8,9 +8,10 @@ import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { DatabaseModule } from 'src/database/database.module';
+import { BlacklistService } from 'src/blacklist/blacklist.service';
 @Module({
   imports: [
-    DatabaseModule,
+    DatabaseModule, 
     JwtModule.register({
       global:true,
       secret: jwtConstants.secret,
@@ -23,7 +24,7 @@ import { DatabaseModule } from 'src/database/database.module';
       provide: APP_GUARD,
       useClass: AuthGuard
     }, 
-    AuthGuard
+    AuthGuard, BlacklistService,
   ],
   controllers: [AuthController],
   exports: [AuthService]
