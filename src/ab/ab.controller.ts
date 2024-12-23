@@ -11,11 +11,6 @@ import { Public } from '../auth/public.decorator';
 export class AbController {
     constructor(private abService: AbService) {}
 
-    // 1. Signup
-    @Post('signup')
-    async signup(@Body() createCompanyDto: CreateCompanyDto) {
-        return this.abService.createCompany(createCompanyDto);
-    }
 
     @Post('logout') // Accessible without authentication
     async logout(@Body() body) {

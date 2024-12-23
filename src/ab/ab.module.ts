@@ -12,5 +12,6 @@ import { AuthModule } from 'src/auth/auth.module';
   ],
   controllers: [AbController],
   providers: [AbService],
+  exports: [AbService]
 })
 export class AbModule {}
