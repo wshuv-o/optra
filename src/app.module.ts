@@ -14,11 +14,13 @@ import { PostModule } from './post/post.module';
 import { TimeSeriesController } from './time-series/time-series.controller';
 import { TimeSeriesService } from './time-series/time-series.service';
 import { TimeSeriesModule } from './time-series/time-series.module';
-import { HttpService } from '@nestjs/axios';
+import { HttpModule, HttpService } from '@nestjs/axios';
+import { ChatbotService } from './chatbot/chatbot.service';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @Module({
-  imports: [AbModule, AuthModule, DatabaseModule, SignupModule, BlogModule, PostModule, TimeSeriesModule],
+  imports: [AbModule, AuthModule, DatabaseModule, SignupModule, BlogModule, PostModule, TimeSeriesModule, ChatbotModule, HttpModule],
   controllers: [AppController, SignupController],
-  providers: [AppService, BlacklistService, SignupService, TempSignupDataService],
+  providers: [AppService, BlacklistService, SignupService, TempSignupDataService, ChatbotService],
 })
 export class AppModule {}
