@@ -13,10 +13,10 @@ import { Investor } from './investor.entity';
       username: 'postgres',
       password: '0507',
       database: 'optra',
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'], // Automatically load entities
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'], 
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Companies, PitchDeck, Investment, Investor]), // Register entities
+    TypeOrmModule.forFeature([Companies, PitchDeck, Investment, Investor]), 
   ],
   exports: [TypeOrmModule], 
 })

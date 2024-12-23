@@ -24,7 +24,7 @@ export class Companies {
   @Column({ length: 100, nullable: true })
   growth: string;
 
-  @Column({ length: 60, nullable: true }) // Adjusted for consistency
+  @Column({ length: 60, nullable: true }) 
   launch_date: string;
 
   @OneToMany(() => PitchDeck, (pitchDeck) => pitchDeck.company)

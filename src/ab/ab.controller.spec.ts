@@ -8,7 +8,6 @@ describe('AbController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AbController],
     }).compile();
-
     controller = module.get<AbController>(AbController);
   });
 

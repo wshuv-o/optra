@@ -12,7 +12,7 @@ export class AbController {
     constructor(private abService: AbService) {}
 
 
-    @Post('logout') // Accessible without authentication
+    @Post('logout')
     async logout(@Body() body) {
         console.log(body.id)
       return this.abService.logout(body.id);
