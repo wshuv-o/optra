@@ -1,10 +1,7 @@
 # compiled output
 /dist
-/backend/node_modules
-/frontend/node_modules
-/frontend/.next
-/backend/build
-/frontend/build
+/node_modules
+/build
 
 # Logs
 logs
@@ -23,7 +20,7 @@ lerna-debug.log*
 /.nyc_output
 
 # IDEs and editors
-/frontend/.idea
+/.idea
 .project
 .classpath
 .c9/
