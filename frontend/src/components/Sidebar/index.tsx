@@ -31,6 +31,16 @@ const menuGroups = [
         icon: (<PiCalendarBlankDuotone/>),
         label: "Profile",
         route: "/profile",
+      },   
+      {
+        icon: (<PiCalendarBlankDuotone/>),
+        label: "Pitch Studio",
+        route: "/pitchstudio",
+      },
+      {
+        icon: (<PiCalendarBlankDuotone/>),
+        label: "Network",
+        route: "/network",
       },
       {
         icon: (<PiCalendarBlankDuotone/>),
