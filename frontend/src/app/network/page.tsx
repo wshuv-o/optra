@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { AiOutlineLike, AiOutlineComment, AiOutlineShareAlt, AiOutlineSave } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
 import { IoSend } from 'react-icons/io5';
+import DefaultLayout from '@/components/Layouts/DefaultLayout';
+import ChatCard from '@/components/Chat/ChatCard';
 
 const Community = () => {
   const [postText, setPostText] = useState('');
@@ -53,53 +55,11 @@ const Community = () => {
   };
 
   return (
+    <DefaultLayout>
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6">
-      {/* Left Sidebar */}
-      <div className="col-span-3 hidden lg:block">
-        <div className="bg-white p-4 rounded-lg shadow-md mb-6">
-          <h2 className="text-lg font-semibold mb-4">Lobby</h2>
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <Image src="/images/user1.jpg" width={40} height={40} className="rounded-full" alt="user" />
-              <div>
-                <p className="text-sm font-medium">Pan Feng Shui</p>
-                <p className="text-xs text-gray-500">12 April at 02:12 PM</p>
-                <p className="text-sm">One of the perks of working...</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Image src="/images/user2.jpg" width={40} height={40} className="rounded-full" alt="user" />
-              <div>
-                <p className="text-sm font-medium">Another User</p>
-                <p className="text-xs text-gray-500">12 April at 01:00 PM</p>
-                <p className="text-sm">Shared a new update...</p>
-              </div>
-            </div>
-          </div>
-          <input
-            type="text"
-            placeholder="Write your messages"
-            className="mt-4 w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
-          />
-        </div>
-
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Events</h2>
-          <ul className="space-y-2">
-            <li className="flex items-center justify-between">
-              <span className="text-sm">10 Events Invites</span>
-              <BsThreeDots />
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-sm">Proda’s Invitation Birthday</span>
-              <BsThreeDots />
-            </li>
-          </ul>
-        </div>
-      </div>
 
       {/* Main Content */}
-      <div className="col-span-6">
+      <div className="col-span-9">
         {/* Post Something */}
         <div className="bg-white p-4 rounded-lg shadow-md mb-6">
           <textarea
@@ -120,7 +80,7 @@ const Community = () => {
         {posts.map((post) => (
           <div key={post.id} className="bg-white p-4 rounded-lg shadow-md mb-6">
             <div className="flex items-start gap-3">
-              <Image src="/images/user1.jpg" width={40} height={40} className="rounded-full" alt="user" />
+              <Image src="/images/user/user-03.png" width={40} height={40} className="rounded-full" alt="user" />
               <div>
                 <p className="text-sm font-medium">{post.user}</p>
                 <p className="text-xs text-gray-500">{post.time}</p>
@@ -157,7 +117,7 @@ const Community = () => {
         {/* Profile Preview */}
         <div className="bg-white p-4 rounded-lg shadow-md mb-6">
           <div className="flex items-center gap-3">
-            <Image src="/images/user-profile.jpg" width={50} height={50} className="rounded-full" alt="profile" />
+            <Image src="/images/user/user-01.png" width={50} height={50} className="rounded-full" alt="profile" />
             <div>
               <p className="font-medium">Amma Yoga Prosetya</p>
               <p className="text-sm text-gray-500">UI/UX Designer</p>
@@ -166,26 +126,37 @@ const Community = () => {
         </div>
 
         {/* Chat List */}
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-4">Chat List</h2>
+        <ChatCard />
+
+        <div className="bg-white p-4 my-6 rounded-lg shadow-md mb-6">
+          <h2 className="text-lg font-semibold mb-4">Lobby</h2>
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Image src="/images/user/user-03.png" width={40} height={40} className="rounded-full" alt="user" />
+              <div>
+                <p className="text-sm font-medium">Pan Feng Shui</p>
+                <p className="text-xs text-gray-500">12 April at 02:12 PM</p>
+                <p className="text-sm">One of the perks of working...</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <Image src="/images/user/user-02.png" width={40} height={40} className="rounded-full" alt="user" />
+              <div>
+                <p className="text-sm font-medium">Another User</p>
+                <p className="text-xs text-gray-500">12 April at 01:00 PM</p>
+                <p className="text-sm">Shared a new update...</p>
+              </div>
+            </div>
+          </div>
           <input
             type="text"
-            placeholder="Search"
-            className="w-full px-4 py-2 border rounded-lg mb-4 focus:ring focus:ring-blue-300"
+            placeholder="Write your messages"
+            className="mt-4 w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300"
           />
-          <ul className="space-y-2">
-            <li className="flex items-center gap-3">
-              <Image src="/images/user2.jpg" width={40} height={40} className="rounded-full" alt="user" />
-              <p>Morgan</p>
-            </li>
-            <li className="flex items-center gap-3">
-              <Image src="/images/user3.jpg" width={40} height={40} className="rounded-full" alt="user" />
-              <p>Stanley Burton</p>
-            </li>
-          </ul>
         </div>
       </div>
     </div>
+    </DefaultLayout>
   );
 };
 
