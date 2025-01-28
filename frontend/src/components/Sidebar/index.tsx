@@ -53,13 +53,8 @@ const menuGroups = [
       },
       {
         icon: (<PiCalendarBlankDuotone/>),
-        label: "Tables",
-        route: "/tables",
-      },
-      {
-        icon: (<PiCalendarBlankDuotone/>),
-        label: "Settings",
-        route: "/settings",
+        label: "Analytics",
+        route: "/analytics",
       },
     ],
   },
@@ -70,6 +65,11 @@ const menuGroups = [
         icon: (<PiCalendarBlankDuotone/>),
         label: "Chart",
         route: "/chart",
+      },      
+      {
+        icon: (<PiCalendarBlankDuotone/>),
+        label: "Settings",
+        route: "/settings",
       },
       {
         icon: (<PiCalendarBlankDuotone/>),
