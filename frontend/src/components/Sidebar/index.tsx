@@ -44,15 +44,6 @@ const menuGroups = [
       },
       {
         icon: (<PiCalendarBlankDuotone/>),
-        label: "Forms",
-        route: "#",
-        children: [
-          { label: "Form Elements", route: "/forms/form-elements" },
-          { label: "Form Layout", route: "/forms/form-layout" },
-        ],
-      },
-      {
-        icon: (<PiCalendarBlankDuotone/>),
         label: "Analytics",
         route: "/analytics",
       },
@@ -60,35 +51,13 @@ const menuGroups = [
   },
   {
     name: "OTHERS",
-    menuItems: [
-      {
-        icon: (<PiCalendarBlankDuotone/>),
-        label: "Chart",
-        route: "/chart",
-      },      
+    menuItems: [    
       {
         icon: (<PiCalendarBlankDuotone/>),
         label: "Settings",
         route: "/settings",
       },
-      {
-        icon: (<PiCalendarBlankDuotone/>),
-        label: "UI Elements",
-        route: "#",
-        children: [
-          { label: "Alerts", route: "/ui/alerts" },
-          { label: "Buttons", route: "/ui/buttons" },
-        ],
-      },
-      {
-        icon: (<PiCalendarBlankDuotone/>),
-        label: "Authentication",
-        route: "#",
-        children: [
-          { label: "Sign In", route: "/auth/signin" },
-          { label: "Sign Up", route: "/auth/signup" },
-        ],
-      },
+
     ],
   },
 ];
