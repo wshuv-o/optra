@@ -24,6 +24,11 @@ const menuGroups = [
       },
       {
         icon: (<PiCalendarBlankDuotone/>),
+        label: "Investor",
+        route: "/investor",
+      },      
+      {
+        icon: (<PiCalendarBlankDuotone/>),
         label: "Calendar",
         route: "/calendar",
       },

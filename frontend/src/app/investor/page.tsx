@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import DefaultLayout from '@/components/Layouts/DefaultLayout';
 const FilterSidebar: React.FC = () => {
 const router= useRouter();
   const [clear, setClear] = useState(false);
@@ -11,6 +12,7 @@ const viewCompany=(arg0: number)=> {
 }
 
   return (
+    <DefaultLayout>
     <div className="flex">
       {/* Sidebar Filter Section */}
       <div className="w-1/4 p-4 bg-gray-50">
@@ -175,7 +177,7 @@ const viewCompany=(arg0: number)=> {
           </div>
         </div>
       </div>
-    </div>
+    </div></DefaultLayout>
   );
 };
 

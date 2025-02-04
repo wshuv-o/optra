@@ -7,9 +7,11 @@ import { Metadata } from "next";
   import Card from "../../ui/Card";
   import CardContent from "../../ui/CardContent";
   import Button from "../../ui/Button"
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
   
   export default function Home() {
     return (
+        <DefaultLayout>
       <div className="max-w-7xl mx-auto p-6 grid grid-cols-3 gap-6">
         {/* Left Section */}
         <div className="col-span-1 flex flex-col space-y-6">
@@ -19,7 +21,7 @@ import { Metadata } from "next";
             <Image src={"/images/brand/brand-01.svg"} alt={"photo"} width={100} height={100} className="rounded-full" />
                 
               <div>
-                <h1 className="text-2xl font-bold">Y Combinator</h1>
+                    <h1 className="text-2xl font-bold">Y Combinator</h1>
                 <p className="text-gray-500">Signal active • Investment Firm</p>
               </div>
               <Button>Follow</Button>
@@ -75,7 +77,7 @@ import { Metadata } from "next";
                   <div className="flex items-center space-x-3">
                     
                       <Image src={employee.image} alt={employee.name} width={40} height={40} className="rounded-full" />
-                   
+
                     <div>
                       <span className="font-semibold">{employee.name}</span>
                       <p className="text-gray-500 text-sm">{employee.role}</p>
@@ -331,7 +333,7 @@ import { Metadata } from "next";
           </CardContent>
         </Card>
         </div>
-      </div>
+      </div></DefaultLayout>
     );
   }
   
