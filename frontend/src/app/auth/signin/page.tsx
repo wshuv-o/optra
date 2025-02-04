@@ -1,16 +1,44 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaGoogle } from "react-icons/fa"; // React Icon for Google
-
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-};
+import {useRouter} from "next/navigation"
 
 const SignIn: React.FC = () => {
+  const router= useRouter()
+  const [email, setEmail] =useState<string>('');
+  const [password, setPassword] = useState<string>('');
+
+  const handleLogin = async () => {
+    if (email && password) {
+      try {
+        const res = await fetch("http://localhost:3000/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        });
+  
+        if (!res.ok) {
+          console.error("Login failed");
+          return;
+        }
+  
+        const data = await res.json();
+        if(data.access_token){
+           router.push('http://localhost:3001')
+        }
+        console.log("Login successful:", data);
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    } else {
+      console.error("Email and password must not be empty");
+    }
+  };
+  
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100 dark:bg-gray-900">
       <div className="w-full max-w-7xl flex bg-white rounded-lg shadow-lg dark:bg-gray-800 overflow-hidden">
@@ -60,7 +88,7 @@ const SignIn: React.FC = () => {
               Sign In to TailAdmin
             </h2>
 
-            <form>
+            <div>
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -74,6 +102,7 @@ const SignIn: React.FC = () => {
                     id="email"
                     placeholder="Enter your email"
                     className="w-full rounded-lg border border-gray-300 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary"
+                    onChange={(e)=>setEmail(e.target.value)}
                   />
                   <span className="absolute right-4 top-4">
                     <svg
@@ -108,6 +137,8 @@ const SignIn: React.FC = () => {
                     id="password"
                     placeholder="6+ Characters, 1 Capital letter"
                     className="w-full rounded-lg border border-gray-300 bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-primary"
+                    onChange={(e)=>setPassword(e.target.value)}
+
                   />
                   <span className="absolute right-4 top-4">
                     <svg
@@ -130,11 +161,11 @@ const SignIn: React.FC = () => {
               </div>
 
               <div className="mb-5">
-                <input
-                  type="submit"
-                  value="Sign In"
+                <button
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                />
+                  onClick={()=>handleLogin()}
+
+                > Sign In </button>
               </div>
 
               <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray-300 p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
@@ -150,7 +181,7 @@ const SignIn: React.FC = () => {
                   </Link>
                 </p>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
