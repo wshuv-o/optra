@@ -11,8 +11,11 @@
   "dependencies": {
     "apexcharts": "^3.45.2",
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "env": "^0.0.2",
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.13",
+    "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.2",
     "jsvectormap": "^1.6.0",
     "next": "^14.2.4",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.7",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
