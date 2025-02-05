@@ -3,11 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { PiCalendarBlankDuotone } from "react-icons/pi";
+import { FaTachometerAlt, FaUserAlt, FaUsers, FaCalendarAlt, FaChartBar, FaCogs } from "react-icons/fa";
+import { RiFileAddFill, RiTeamFill, RiSettings2Fill } from "react-icons/ri";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import Image from "next/image";
+// Define the colors for the gradient
+const sidebarGradient = "bg-gradient-to-r from-[#0f0f0f] to-[#0f0f0f]";
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -18,37 +23,37 @@ const menuGroups = [
     name: "MENU",
     menuItems: [
       {
-        icon: ( <PiCalendarBlankDuotone/>),
+        icon: <FaTachometerAlt />, // Dashboard icon
         label: "Dashboard",
         route: "/",
       },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <FaUserAlt />, // Investor icon
         label: "Investor",
         route: "/investor",
-      },      
+      },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <FaCalendarAlt />, // Calendar icon
         label: "Calendar",
         route: "/calendar",
       },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <FaUserAlt />, // Profile icon
         label: "Profile",
         route: "/profile",
-      },   
+      },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <RiFileAddFill />, // Pitch Studio icon
         label: "Pitch Studio",
         route: "/pitchstudio",
       },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <RiTeamFill />, // Network icon
         label: "Network",
         route: "/network",
       },
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <FaChartBar />, // Analytics icon
         label: "Analytics",
         route: "/analytics",
       },
@@ -56,13 +61,12 @@ const menuGroups = [
   },
   {
     name: "OTHERS",
-    menuItems: [    
+    menuItems: [
       {
-        icon: (<PiCalendarBlankDuotone/>),
+        icon: <RiSettings2Fill />, // Settings icon
         label: "Settings",
         route: "/settings",
       },
-
     ],
   },
 ];
@@ -74,7 +78,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${
+        className={`fixed left-0 top-0 z-[9999] flex h-screen w-72.5 flex-col overflow-y-hidden ${sidebarGradient} duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

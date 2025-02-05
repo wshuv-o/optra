@@ -14,7 +14,7 @@ import { BlacklistService } from 'src/blacklist/blacklist.service';
     JwtModule.register({
       global:true,
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: "120s"},
+      signOptions: {expiresIn: "1200s"},
     }),
   ],
   providers: [

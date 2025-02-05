@@ -23,11 +23,14 @@ const SignIn: React.FC = () => {
   
         if (!res.ok) {
           console.error("Login failed");
+          alert("Invalid Credentials!")
           return;
         }
   
         const data = await res.json();
         if(data.access_token){
+           localStorage.setItem("authToken", data.access_token);
+           document.cookie = `authToken=${data.access_token}; path=/; secure; samesite=strict`;
            router.push('http://localhost:3001')
         }
         console.log("Login successful:", data);
@@ -85,7 +88,7 @@ const SignIn: React.FC = () => {
           <div className="w-full max-w-sm mx-auto">
             <span className="mb-1.5 block font-medium">Start for free</span>
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              Sign In to TailAdmin
+              Sign In to Optra
             </h2>
 
             <div>

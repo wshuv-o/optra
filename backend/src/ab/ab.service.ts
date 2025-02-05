@@ -10,7 +10,8 @@ import { CreateInvestorDto } from './ab.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 @Injectable()
-export class AbService {    
+export class AbService {
+ 
   private dynamicSecrets = new Map<number, string>();
   constructor(
   @InjectRepository(Companies) private companiesRepo: Repository<Companies>,
@@ -58,6 +59,13 @@ export class AbService {
     } else {
       throw new NotFoundException('Session not found');
     }
+  }
+  async getCompany(id: number) {
+    const company = this.companiesRepo.findOne({ where: { id } });
+    if (!company) {
+      throw new Error('Company not found');
+    }
+    return company;
   }
 
   // Validate token

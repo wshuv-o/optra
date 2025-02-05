@@ -24,6 +24,11 @@ export class AbController {
         return this.abService.updateCompany(id, updateCompanyDto);
     }
 
+    @Get(':id/me')
+    async getCompany(@Param('id') id: number) {
+      return this.abService.getCompany(id);
+    }
+
     // 4. Fetch all company details
     @Public()
     @Get('companies')
