@@ -6,7 +6,7 @@ console.log("POST ==> ");
 
   const { query } = await req.json();
 
-  const HUGGING_FACE_API_KEY = "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" 
+  const HUGGING_FACE_API_KEY = "" 
   const model = "mistralai/Mistral-7B-Instruct-v0.3"; 
 
   try {
