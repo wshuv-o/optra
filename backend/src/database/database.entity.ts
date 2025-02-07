@@ -71,6 +71,9 @@ export class Companies {
   @Column({ type: 'text', nullable: true })
   companyDescription: string;
 
+  @Column({type: "text", nullable:true })
+  doc: string;
+
   @OneToMany(() => PitchDeck, (pitchDeck) => pitchDeck.company)
   pitchDecks: PitchDeck[];
 

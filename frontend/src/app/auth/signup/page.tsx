@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
-
+import { useRouter } from "next/navigation";
 const SignUp: React.FC = () => {
   const [step, setStep] = useState<1 | 2>(1);
   const [name, setName] = useState("");
@@ -13,6 +13,7 @@ const SignUp: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const router=useRouter()
   // Step 1: Handle user sign up
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,8 +53,9 @@ const SignUp: React.FC = () => {
         email,
         otp,
       });
-      if (response.data.message) {
+      if (response.data.user) {
         alert("Signup complete! Welcome to Optra!");
+        router.push("/auth/signin")
         // Redirect or handle success here
       } else {
         setError("Invalid OTP. Please try again.");

@@ -4,9 +4,11 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { decrypt } from "@/utils/decryptJWT";
 
 const Settings = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState([]);
   const [formData, setFormData] = useState({
     emailAddress: "",
     phoneNumber: "",
@@ -24,20 +26,24 @@ const Settings = () => {
     zip: "",
     country: "",
     companyDescription: "",
+    profile_pic: "https://placehold.co/400"
   });
 
   const router = useRouter();
+  const token = localStorage.getItem("authToken") 
+  const payload= decrypt(token as string);
+
+
   useEffect(() => {
     const fetchCompanyData = async () => {
       try {
-        const token = localStorage.getItem("authToken");
         if (!token) {
           alert("You are not authenticated.");
           return;
         }
 
         const response = await axios.get(
-          `http://localhost:3000/ab/${1}/me`, 
+          `http://localhost:3000/ab/${payload.sub}/me`, 
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,6 +67,42 @@ const Settings = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleFileChangeImage = (event: any) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  const handleImageSave = async () => {
+    if (!selectedFile) {
+      alert('Please select a file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', selectedFile as any);
+
+    try {
+      const response = await axios.post('http://localhost:3000/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+
+      setFormData((prev) => ({
+        ...prev,
+        profile_pic: response.data.imageUrl // Replace with the actual value
+      }));
+            await axios.patch(
+        `http://localhost:3000/ab/${payload.sub}`,
+        {profile_pic: formData},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert('Logo uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading the logo:', error);
+      alert('Failed to upload logo.');
+    }
+  };
   const handleSave = async () => {
     const token = localStorage.getItem("authToken");
 
@@ -78,7 +120,7 @@ const Settings = () => {
       }
 
       await axios.patch(
-        `http://localhost:3000/ab/${1}`,
+        `http://localhost:3000/ab/${payload.sub}`,
         updatedFields,
         {
           headers: {
@@ -98,7 +140,6 @@ const Settings = () => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
-  
 
   return (
     <div className="mx-auto max-w-270">
@@ -121,14 +162,14 @@ const Settings = () => {
                   <label htmlFor="emailAddress" className="mb-3 block text-sm font-medium text-black dark:text-white">
                     Email Address
                   </label>
-                  <input type="email" onChange={handleInputChange} value={formData.emailAddress} id="emailAddress" name="emailAddress" placeholder="devidjond45@gmail.com" defaultValue="devidjond45@gmail.com" className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
+                  <input type="email" onChange={handleInputChange} value={formData.emailAddress} id="emailAddress" name="emailAddress" placeholder="example@gmail.com" className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
                   </div>
 
                   <div className="w-full sm:w-1/2">
                     <label htmlFor="phoneNumber" className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Phone Number
                     </label>
-                    <input type="text" onChange={handleInputChange} value={formData.phoneNumber} id="phoneNumber" name="phoneNumber" placeholder="+990 3343 7865" defaultValue="+990 3343 7865" className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
+                    <input type="text" onChange={handleInputChange} value={formData.phoneNumber} id="phoneNumber" name="phoneNumber" placeholder="+123 345 7865" className="w-full rounded border border-stroke bg-gray px-4.5 py-3 text-black focus:border-primary focus:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary" />
                   </div>
                 </div>
 
@@ -373,26 +414,16 @@ const Settings = () => {
               <div>
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-14 w-14 rounded-full">
-                    <Image
-                      src={"/images/brand/brand-04.svg"}
+                  {formData.profile_pic ? (
+                <img src={formData.profile_pic} width={55} height={55} alt="Company Logo" />
+                  ) : (
+                    <img
+                      src="/images/brand/brand-04.svg"
                       width={55}
                       height={55}
-                      alt="Company Logo"
-
+                      alt="Default Logo"
                     />
-                  </div>
-                  <div>
-                    <span className="mb-1.5 block text-black dark:text-white">
-                      Edit your logo
-                    </span>
-                    <div className="flex gap-2.5">
-                      <button className="text-sm hover:text-primary" type="button">
-                        Delete
-                      </button>
-                      <button className="text-sm hover:text-primary" type="button">
-                        Update
-                      </button>
-                    </div>
+                  )}
                   </div>
                 </div>
 
@@ -403,6 +434,7 @@ const Settings = () => {
                   <input
                     type="file"
                     accept="image/*"
+                    onChange={handleFileChangeImage}
                     className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
                   />
                   <div className="flex flex-col items-center justify-center space-y-3">
@@ -432,14 +464,8 @@ const Settings = () => {
 
                 <div className="flex justify-end gap-4.5">
                   <button
-                    type="reset"
-                    className="flex justify-center rounded border border-stroke px-6 py-2 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSave}
-                    type="submit"
+                    onClick={handleImageSave}
+                    type="button"
                     className="flex justify-center rounded bg-primary px-6 py-2 font-medium text-gray hover:bg-opacity-90"
                   >
                     Save

@@ -13,7 +13,7 @@ const Calendar = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [showAddEvent, setShowAddEvent] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: '', date: '', time: '', category: 'work' });
-
+  const [email, setEmail] = useState({ subject: "", body: "" });
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDate(new Date());
@@ -89,7 +89,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 font-sans">
+    <div className="container mx-auto p-4 font-sans col-2">
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-3/4 bg-white rounded-lg shadow-lg p-4">
           <div className="flex justify-between items-center mb-4">
@@ -183,75 +183,121 @@ const Calendar = () => {
         </div>
       )}
 
-      {showAddEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h2 className="text-2xl font-bold mb-4">Add New Event</h2>
-            <form onSubmit={handleAddEvent}>
-              <div className="mb-4 space-y-2">
-                <label htmlFor="title" className="block text-sm font-bold mb-2">Title</label>
-                <input
-                  type="text"
-                  id="title"
-                  className="w-full p-2 border rounded"
-                  value={newEvent.title}
-                  onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="date" className="block text-sm font-bold mb-2">Date</label>
-                <input
-                  type="date"
-                  id="date"
-                  className="w-full p-2 border rounded"
-                  value={newEvent.date}
-                  onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="time" className="block text-sm font-bold mb-2">Time</label>
-                <input
-                  type="time"
-                  id="time"
-                  className="w-full p-2 border rounded"
-                  value={newEvent.time}
-                  onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="category" className="block text-sm font-bold mb-2">Category</label>
-                <select
-                  id="category"
-                  className="w-full p-2 border rounded"
-                  value={newEvent.category}
-                  onChange={(e) => setNewEvent({ ...newEvent, category: e.target.value })}
-                >
-                  <option value="work">Work</option>
-                  <option value="personal">Personal</option>
-                </select>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="mr-2 bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded"
-                  onClick={() => setShowAddEvent(false)}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                >
-                  Add Event
-                </button>
-              </div>
-            </form>
+{showAddEvent && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="bg-white p-6 rounded-lg shadow-xl max-w-4xl w-full flex">
+      
+      {/* Left Column - Event Form */}
+      <div className="w-1/2 pr-4">
+        <h2 className="text-2xl font-bold mb-4">Add New Event</h2>
+        <form onSubmit={handleAddEvent}>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2">Title</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded"
+              value={newEvent.title}
+              onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+              required
+            />
           </div>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2">Date</label>
+            <input
+              type="date"
+              className="w-full p-2 border rounded"
+              value={newEvent.date}
+              onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2">Time</label>
+            <input
+              type="time"
+              className="w-full p-2 border rounded"
+              value={newEvent.time}
+              onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2">Category</label>
+            <select
+              className="w-full p-2 border rounded"
+              value={newEvent.category}
+              onChange={(e) => setNewEvent({ ...newEvent, category: e.target.value })}
+            >
+              <option value="work">Work</option>
+              <option value="personal">Personal</option>
+            </select>
+          </div>
+          <div className="mb-4">
+            <label className="block text-sm font-bold mb-2">Meeting Members</label>
+            <input
+              type="text"
+              className="w-full p-2 border rounded"
+              placeholder="Enter members' emails separated by commas"
+              value={newEvent.members}
+              onChange={(e) => setNewEvent({ ...newEvent, members: e.target.value })}
+            />
+          </div>
+
+          <div className="flex justify-end">
+            <button type="button" className="mr-2 bg-gray-300 py-2 px-4 rounded" onClick={() => setShowAddEvent(false)}>
+              Cancel
+            </button>
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+              Add Event & Send Email
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* Right Column - Email Subject and Body */}
+      <div className="w-1/2 pl-4 bg-gray-100 p-4 rounded-lg">
+        <h3 className="text-lg font-semibold mb-4">Email Details</h3>
+
+        {/* Email Subject */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2">Email Subject</label>
+          <input
+            type="text"
+            className="w-full p-2 border rounded"
+            value={email.subject}
+            onChange={(e) => setEmail({ ...email, subject: e.target.value })}
+            placeholder="Enter email subject"
+            required
+          />
         </div>
-      )}
+
+        {/* Email Body */}
+        <div className="mb-4">
+          <label className="block text-sm font-bold mb-2">Email Body</label>
+          <textarea
+            className="w-full p-2 border rounded"
+            value={email.body}
+            onChange={(e) => setEmail({ ...email, body: e.target.value })}
+            placeholder="Enter email body"
+            rows="4"
+            required
+          />
+        </div>
+
+        {/* Email Preview */}
+        <div>
+          <h4 className="font-semibold">Email Preview:</h4>
+          <p><strong>Subject:</strong> {email.subject}</p>
+          <p className="mt-2"><strong>Body:</strong></p>
+          <p>{email.body}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+)}
+
+
     </div>
   );
 };

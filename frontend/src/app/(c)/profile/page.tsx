@@ -1,12 +1,12 @@
 'use client'
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useEffect, useState } from "react";
 import TableOne from "@/components/Tables/TableOne";
 
 import axios from "axios";
 import { PitchDeckCard } from "@/components/PitchDeckCard";
+import { decrypt } from "@/utils/decryptJWT";
 
 const Profile = () => {
   const [filter, setFilter] = useState("");
@@ -19,6 +19,65 @@ const Profile = () => {
     setOrderStatus("");
   };
 
+  const [formData, setFormData] = useState({
+    emailAddress: "",
+    phoneNumber: "",
+    bio: "",
+    companySocials: "",
+    companyName: "",
+    registrationNumber: "",
+    industry: "",
+    companyEmail: "",
+    companyPhone: "",
+    companyWebsite: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+    companyDescription: "",
+    profile_pic: "/images/brand/brand-01.svg"
+  });
+
+
+
+
+
+
+  const token = localStorage.getItem("authToken") 
+  const payload= decrypt(token as string);
+  
+  useEffect(() => {
+    const fetchCompanyData = async () => {
+      try {
+        if (!token) {
+          alert("You are not authenticated.");
+          return;
+        }
+
+        const response = await axios.get(
+          `http://localhost:3000/ab/${payload.sub}/me`, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setFormData({
+          ...formData,
+          ...response.data, // Populate the form data with the API response
+        });
+        // Populate formData with the fetched data
+      } catch (error) {
+        alert("Error fetching company data.");
+        console.error(error);
+      }
+    };
+
+    fetchCompanyData();
+  }, []);
+
 
 const PitchDecks = () => {
   const [pitchDecks, setPitchDecks] = useState<any[]>([]);
@@ -26,6 +85,9 @@ const PitchDecks = () => {
   const [filteredPitchDecks, setFilteredPitchDecks] = useState<any[]>([]);
 
   // Fetch the list of all pitch decks
+
+
+
   useEffect(() => {
     const fetchPitchDecks = async () => {
       try {
@@ -95,15 +157,15 @@ const PitchDecks = () => {
           </div>
           <div className="flex items-center gap-6">
             <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-white">
-              <Image
-                src="/images/user/user-06.png"
+              <img
+                src={formData.profile_pic}
                 width={112}
                 height={112}
                 alt="Profile"
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">ByteVerse inc.</h1>
+              <h1 className="text-3xl font-bold">{formData.companyName}</h1>
               <p className="text-sm mt-1">Member Since, April 2024</p>
               <p className="text-sm">April 23, 2024 1:49 am</p>
               <p className="text-sm">21 Profile Views</p>
@@ -124,7 +186,7 @@ const PitchDecks = () => {
               </div>
               <div className="px-4 space-y-1">
                 <span className="text-sm font-medium text-gray-500">Location </span>
-                <span className="text-base font-semibold text-gray-800">Dhaka, Bangladesh</span>
+                <span className="text-base font-semibold text-gray-800">{formData.city} { formData.country}</span>
               </div>
               <div className="px-4 space-y-1">
                 <span className="text-sm font-medium text-gray-500">Funding Type </span>

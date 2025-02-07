@@ -5,6 +5,8 @@ import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
+import AISearchPage from "@/app/(c)/ai/page";
+import InvestmentAd from "../Ads";
 
 const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
   ssr: false,
@@ -100,15 +102,18 @@ const ECommerce: React.FC = () => {
         </CardDataStats>
       </div>
 
-      <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
-        <ChartTwo />
-        <ChartThree />
-        <div className="col-span-12 xl:col-span-8">
+      <div >
+      <div className="bg-transparent p-6 rounded-lg shadow-md grid grid-cols-2 gap-4">
+      <AISearchPage />
+      <InvestmentAd/>
+    </div>
+
+
+        <div className="bg-white p-6 rounded-lg shadow-md xl:col-span-8">
           <TableOne />
         </div>
-        
       </div>
+
     </>
   );
 };

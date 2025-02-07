@@ -17,11 +17,12 @@ import { TimeSeriesModule } from './time-series/time-series.module';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ChatbotService } from './chatbot/chatbot.service';
 import { ChatbotModule } from './chatbot/chatbot.module';
+import { UploadModule } from './upload/upload.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Module({
-  imports: [AbModule, AuthModule, DatabaseModule, SignupModule, BlogModule, PostModule, TimeSeriesModule, ChatbotModule, HttpModule],
+  imports: [AbModule, AuthModule, DatabaseModule, SignupModule, BlogModule, PostModule, TimeSeriesModule, ChatbotModule, HttpModule, UploadModule],
   controllers: [AppController, SignupController],
   providers: [AppService, BlacklistService, SignupService, TempSignupDataService, ChatbotService],
 })
